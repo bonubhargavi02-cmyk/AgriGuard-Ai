@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriGuard AI - Smart Farming Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Main App View -->
+    <div id="view-app" class="app-view">
+        <div class="dashboard">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i>
+                <h2>AgriGuard AI</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="tab-home"><i class="fa-solid fa-house"></i> Dashboard</li>
+                <li class="nav-item" data-target="tab-disease"><i class="fa-solid fa-microscope"></i> Disease Detection</li>
+                <li class="nav-item" data-target="tab-irrigation"><i class="fa-solid fa-droplet"></i> Smart Irrigation</li>
+                <li class="nav-item" data-target="tab-yield"><i class="fa-solid fa-chart-line"></i> Yield Analytics</li>
+            </ul>
+            
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Home / Dashboard Tab -->
+            <div id="tab-home" class="main-tab active">
+                <header>
+                <div class="welcome-text">
+                    <h1>Welcome back, Farmer! 👋</h1>
+                    <p>Here's what's happening on your farm today.</p>
+                </div>
+                <div class="header-actions">
+                    <select id="headerLangSelect" class="btn btn-outline" style="padding: 0.5rem; margin-right: 1rem; border-radius: 5px; background: transparent; color: var(--text-main); border: 1px solid var(--primary); cursor: pointer;">
+                        <option value="en" style="color: black;">English</option>
+                        <option value="te" style="color: black;">&#x0C24;&#x0C46;&#x0C32;&#x0C41;&#x0C17;&#x0C41; (Telugu)</option>
+                    </select>
+                    <button id="openScanModal" class="btn btn-primary"><i class="fa-solid fa-camera"></i> Scan Crop</button>
+                    <div class="profile-pic"></div>
+                </div>
+            </header>
+
+            <div class="info-banner card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary); padding: 1rem 1.5rem;">
+                <p style="color: var(--text-muted); line-height: 1.5;"><strong style="color: var(--text-main);"><i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Intelligence Core:</strong> Disease detection combines clinical diagnostics, AI technologies, and public health surveillance to identify illnesses early, improve treatment outcomes, and monitor outbreaks.</p>
+            </div>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon weather"><i class="fa-solid fa-cloud-sun"></i></div>
+                    <div class="stat-info">
+                        <h3>Weather Status</h3>
+                        <p class="value">24°C / Sunny</p>
+                        <span class="trend positive">Perfect for spraying</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon soil"><i class="fa-solid fa-mound"></i></div>
+                    <div class="stat-info">
+                        <h3>Soil Moisture</h3>
+                        <p class="value">42%</p>
+                        <span class="trend warning">Irrigation needed soon</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon health"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <div class="stat-info">
+                        <h3>Crop Health Index</h3>
+                        <p class="value">94/100</p>
+                        <span class="trend positive">+2% from last week</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon alert"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <h3>Active Alerts</h3>
+                        <p class="value">1 Alert</p>
+                        <span class="trend negative">Potential aphid risk</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="main-grid">
+                <section class="ai-analysis card">
+                    <div class="card-header">
+                        <h2>Recent AI Scans</h2>
+                        <button class="btn-link">View All</button>
+                    </div>
+                    <div class="scan-list">
+                        <div class="scan-item">
+                            <div class="scan-img tomato"></div>
+                            <div class="scan-details">
+                                <h4>Tomato Plant - Sector A</h4>
+                                <p>Detected: <span class="badge healthy">Healthy</span></p>
+                            </div>
+                            <div class="scan-time">2 hrs ago</div>
+                        </div>
+                        <div class="scan-item">
+                            <div class="scan-img wheat"></div>
+                            <div class="scan-details">
+                                <h4>Wheat - Sector D</h4>
+                                <p>Detected: <span class="badge danger">Leaf Rust (89%)</span></p>
+                            </div>
+                            <div class="scan-time">5 hrs ago</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="irrigation-control card">
+                    <div class="card-header">
+                        <h2>Smart Irrigation</h2>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="water-level">
+                        <div class="circle">
+                            <div class="water" style="height: 65%;"></div>
+                            <span class="percentage">65%</span>
+                        </div>
+                    </div>
+                    <p class="text-center mt-3">Tank Level</p>
+                    <button class="btn btn-outline btn-block mt-3">Manual Override</button>
+                </section>
+            </div>
+
+            <!-- New Analytics Section -->
+            <section class="analytics-section mt-4">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h2>Detection Confidence Trends</h2>
+                        <div class="chart-actions">
+                            <button class="btn-link active">Weekly</button>
+                            <button class="btn-link">Monthly</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="detectionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card table-card mt-4">
+                    <div class="card-header">
+                        <h2>Detailed Scan Logs</h2>
+                        <button class="btn btn-outline"><i class="fa-solid fa-download"></i> Export</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="scanTable">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Crop Type</th>
+                                    <th>Location</th>
+                                    <th>Detection Status</th>
+                                    <th>Confidence</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scanTableBody">
+                                <tr class="table-row">
+                                    <td>Today, 10:45 AM</td>
+                                    <td><i class="fa-solid fa-leaf" style="color: #ef4444;"></i> Tomato</td>
+                                    <td>Sector A</td>
+                                    <td><span class="badge healthy">Healthy</span></td>
+                                    <td>
+                                        <div class="progress-bar"><div class="progress" style="width: 98%; background: var(--success);"></div></div>
+                                        <span class="progress-text">98%</span>
+                                    </td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td>Today, 08:30 AM</td>
+                                    <td><i class="fa-solid fa-wheat-awn" style="color: #f59e0b;"></i> Wheat</td>
+                                    <td>Sector D</td>
+                                    <td><span class="badge danger">Leaf Rust</span></td>
+                                    <td>
+                                        <div class="progress-bar"><div class="progress" style="width: 89%; background: var(--danger);"></div></div>
+                                        <span class="progress-text">89%</span>
+                                    </td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td>Yesterday, 04:15 PM</td>
+                                    <td><i class="fa-solid fa-seedling" style="color: #10b981;"></i> Soybean</td>
+                                    <td>Sector B</td>
+                                    <td><span class="badge warning">Needs Water</span></td>
+                                    <td>
+                                        <div class="progress-bar"><div class="progress" style="width: 75%; background: var(--warning);"></div></div>
+                                        <span class="progress-text">75%</span>
+                                    </td>
+                                    <td><button class="btn-icon"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Home Tab -->
+            
+            <!-- Disease Detection Tab -->
+            <div id="tab-disease" class="main-tab" style="display: none;">
+                <header>
+                    <div class="welcome-text">
+                        <h1>Disease Detection Portal</h1>
+                        <p>Analyze crops, identify pathogens, and get treatment plans.</p>
+                    </div>
+                </header>
+
+                <div class="info-banner card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary); padding: 1rem 1.5rem;">
+                    <p style="color: var(--text-muted); line-height: 1.5;"><strong style="color: var(--text-main);"><i class="fa-solid fa-book-medical" style="color: var(--primary);"></i> Intelligence Core:</strong> Disease detection combines clinical diagnostics, AI technologies, and public health surveillance to identify illnesses early, improve treatment outcomes, and monitor outbreaks.</p>
+                </div>
+
+                <div class="main-grid">
+                    <section class="card" style="grid-column: span 2;">
+                        <div class="card-header">
+                            <h2>Advanced Diagnostic Scanner</h2>
+                        </div>
+                        <div class="upload-container" id="advancedDropZone" style="padding: 4rem;">
+                            <i class="fa-solid fa-microscope upload-icon" style="font-size: 4rem;"></i>
+                            <h3 class="mt-3">Upload Crop Imagery</h3>
+                            <p class="text-muted mt-2">Support for high-resolution images, thermal scans, and NDVI.</p>
+                            <input type="file" id="advancedFileUpload" accept="image/*" hidden>
+                            <button class="btn btn-primary mt-3" onclick="document.getElementById('advancedFileUpload').click()">Select Files</button>
+                        </div>
+                        
+                        <div id="advancedResult" style="display: none; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 12px; margin-top: 2rem;">
+                            <div style="display: flex; gap: 2rem; align-items: flex-start;">
+                                <img id="advancedPreview" src="" style="width: 200px; border-radius: 12px; border: 2px solid var(--primary);">
+                                <div style="flex: 1;">
+                                    <h3 style="color: var(--danger);"><i class="fa-solid fa-biohazard"></i> Pathogen Detected: Phytophthora infestans (Late Blight)</h3>
+                                    <p class="mt-2 text-muted"><strong>Confidence:</strong> 94.2%</p>
+                                    <p class="text-muted"><strong>Affected Areas:</strong> Leaves, Stems (Sector B)</p>
+                                    
+                                    <h4 class="mt-3">Treatment Plan:</h4>
+                                    <ul style="color: var(--text-muted); margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
+                                        <li>Immediately prune and destroy infected foliage.</li>
+                                        <li>Apply copper-based fungicide to remaining healthy plants.</li>
+                                        <li>Reduce irrigation to lower humidity in Sector B.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End Disease Tab -->
+
+            <!-- Smart Irrigation Tab -->
+            <div id="tab-irrigation" class="main-tab" style="display: none;">
+                <header>
+                    <div class="welcome-text">
+                        <h1>Smart Irrigation Control</h1>
+                        <p>Monitor soil moisture and control water distribution across all sectors.</p>
+                    </div>
+                </header>
+                
+                <div class="main-grid">
+                    <section class="card" style="grid-column: span 2;">
+                        <div class="card-header">
+                            <h2>Zone Moisture & Controls</h2>
+                            <button class="btn btn-outline"><i class="fa-solid fa-rotate"></i> Sync Sensors</button>
+                        </div>
+                        <div class="stats-grid" style="margin-bottom: 0;">
+                            <!-- Zone A -->
+                            <div class="stat-card" style="flex-direction: column; align-items: center; text-align: center;">
+                                <h3 class="mt-2">Sector A - Tomatoes</h3>
+                                <div class="circle mt-3" style="width: 100px; height: 100px; border-color: rgba(16, 185, 129, 0.3); box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.2);">
+                                    <div class="water" style="height: 45%; background: linear-gradient(180deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8));"></div>
+                                    <span class="percentage" style="font-size: 1.5rem;">45%</span>
+                                </div>
+                                <p class="text-muted mt-2" style="font-size: 0.85rem;">Soil Moisture</p>
+                                <div class="mt-3" style="display: flex; align-items: center; gap: 10px;">
+                                    <span>Sprinklers:</span>
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Zone B -->
+                            <div class="stat-card" style="flex-direction: column; align-items: center; text-align: center;">
+                                <h3 class="mt-2">Sector B - Soybeans</h3>
+                                <div class="circle mt-3" style="width: 100px; height: 100px;">
+                                    <div class="water" style="height: 65%;"></div>
+                                    <span class="percentage" style="font-size: 1.5rem;">65%</span>
+                                </div>
+                                <p class="text-muted mt-2" style="font-size: 0.85rem;">Soil Moisture</p>
+                                <div class="mt-3" style="display: flex; align-items: center; gap: 10px;">
+                                    <span>Sprinklers:</span>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Zone C -->
+                            <div class="stat-card" style="flex-direction: column; align-items: center; text-align: center;">
+                                <h3 class="mt-2">Sector C - Wheat</h3>
+                                <div class="circle mt-3" style="width: 100px; height: 100px; border-color: rgba(239, 68, 68, 0.3); box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.2);">
+                                    <div class="water" style="height: 20%; background: linear-gradient(180deg, rgba(239, 68, 68, 0.8), rgba(185, 28, 28, 0.8));"></div>
+                                    <span class="percentage" style="font-size: 1.5rem;">20%</span>
+                                </div>
+                                <p class="text-muted mt-2" style="font-size: 0.85rem;">Soil Moisture (Critical)</p>
+                                <div class="mt-3" style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: var(--danger)">Sprinklers:</span>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Weekly Water Usage</h2>
+                        </div>
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="waterChart"></canvas>
+                        </div>
+                    </section>
+
+                    <section class="card">
+                        <div class="card-header">
+                            <h2>Weather Forecast</h2>
+                        </div>
+                        <div class="scan-list mt-3">
+                            <div class="scan-item">
+                                <div class="scan-img" style="background-color: transparent; font-size: 2rem; color: #f59e0b; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-sun"></i></div>
+                                <div class="scan-details">
+                                    <h4>Today</h4>
+                                    <p>28°C / 0% Precipitation</p>
+                                </div>
+                            </div>
+                            <div class="scan-item">
+                                <div class="scan-img" style="background-color: transparent; font-size: 2rem; color: #38bdf8; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-cloud-rain"></i></div>
+                                <div class="scan-details">
+                                    <h4>Tomorrow</h4>
+                                    <p>22°C / 80% Precipitation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End Irrigation Tab -->
+
+            <!-- Yield Analytics Tab -->
+            <div id="tab-yield" class="main-tab" style="display: none;">
+                <header>
+                    <div class="welcome-text">
+                        <h1>Yield & Market Analytics</h1>
+                        <p>Track production metrics and live market prices.</p>
+                    </div>
+                </header>
+
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h2>Harvest Projection vs Actual (Tons)</h2>
+                        <div class="chart-actions">
+                            <button class="btn-link active">2026 Season</button>
+                            <button class="btn-link">Historical</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="yieldChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card table-card mt-4">
+                    <div class="card-header">
+                        <h2>Live Crop Market Prices</h2>
+                        <span class="badge healthy"><i class="fa-solid fa-circle-nodes"></i> Market Open</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="marketTable">
+                            <thead>
+                                <tr>
+                                    <th>Commodity</th>
+                                    <th>Price (per Ton)</th>
+                                    <th>24h Change</th>
+                                    <th>Demand Prediction</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td><strong>Winter Wheat</strong></td>
+                                    <td>$245.50</td>
+                                    <td><span style="color: var(--success);"><i class="fa-solid fa-arrow-trend-up"></i> +$2.30</span></td>
+                                    <td><span class="badge healthy">High</span></td>
+                                    <td><button class="btn btn-outline" style="padding: 0.4rem 1rem;">Sell</button></td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td><strong>Soybeans</strong></td>
+                                    <td>$512.00</td>
+                                    <td><span style="color: var(--danger);"><i class="fa-solid fa-arrow-trend-down"></i> -$4.10</span></td>
+                                    <td><span class="badge warning">Moderate</span></td>
+                                    <td><button class="btn btn-outline" style="padding: 0.4rem 1rem;">Hold</button></td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td><strong>Tomatoes (Processing)</strong></td>
+                                    <td>$128.75</td>
+                                    <td><span style="color: var(--success);"><i class="fa-solid fa-arrow-trend-up"></i> +$0.80</span></td>
+                                    <td><span class="badge healthy">High</span></td>
+                                    <td><button class="btn btn-outline" style="padding: 0.4rem 1rem;">Sell</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Yield Tab -->
+
+        </main>
+    </div>
+    <!-- Scan Modal -->
+    <div id="scanModal" class="modal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>Scan or Upload Crop</h2>
+                <span class="close-btn">&times;</span>
+            </div>
+            
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="camera"><i class="fa-solid fa-camera"></i> Camera</button>
+                <button class="tab-btn" data-tab="upload"><i class="fa-solid fa-upload"></i> Upload</button>
+            </div>
+            
+            <div id="cameraTab" class="tab-content active">
+                <div class="video-container">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <canvas id="cameraCanvas" style="display:none;"></canvas>
+                    <div class="scanner-overlay"></div>
+                </div>
+                <button id="captureBtn" class="btn btn-primary btn-block mt-3"><i class="fa-solid fa-camera"></i> Capture Photo</button>
+            </div>
+            
+            <div id="uploadTab" class="tab-content" style="display:none;">
+                <div class="upload-container" id="dropZone">
+                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                    <p>Drag & drop or click to browse</p>
+                    <input type="file" id="fileUpload" accept="image/*" hidden>
+                    <button class="btn btn-outline mt-3" onclick="document.getElementById('fileUpload').click()">Browse Files</button>
+                </div>
+                <div id="previewContainer" style="display:none;" class="mt-3 text-center">
+                    <img id="imagePreview" src="" alt="Preview" class="preview-img">
+                    <button id="analyzeBtn" class="btn btn-primary btn-block mt-3"><i class="fa-solid fa-microchip"></i> Analyze Image</button>
+                </div>
+            </div>
+            
+            <div id="scanResult" class="scan-result" style="display:none;">
+                <h3 class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Analyzing with AI...</h3>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+
+    <script>
+        const translations = {
+            en: {
+                "Dashboard": "Dashboard",
+                "Disease Detection": "Disease Detection",
+                "Smart Irrigation": "Smart Irrigation",
+                "Yield Analytics": "Yield Analytics",
+                "Welcome back, Farmer! 👋": "Welcome back, Farmer! 👋",
+                "Scan Crop": "Scan Crop",
+                "Weather Status": "Weather Status",
+                "Soil Moisture": "Soil Moisture",
+                "Crop Health Index": "Crop Health Index",
+                "Active Alerts": "Active Alerts",
+                "Intelligence Core:": "Intelligence Core:",
+                "Recent AI Scans": "Recent AI Scans",
+                "Smart Irrigation Control": "Smart Irrigation Control",
+                "Yield & Market Analytics": "Yield & Market Analytics",
+                "Perfect for spraying": "Perfect for spraying",
+                "Irrigation needed soon": "Irrigation needed soon",
+                "Potential aphid risk": "Potential aphid risk",
+                "Manual Override": "Manual Override",
+                "Detailed Scan Logs": "Detailed Scan Logs"
+            },
+            te: {
+                "Dashboard": "\u0c21\u0c3e\u0c37\u0c4d\u200c\u0c2c\u0c4b\u0c30\u0c4d\u0c21\u0c4d",
+                "Disease Detection": "\u0c35\u0c4d\u0c2f\u0c3e\u0c27\u0c3f \u0c17\u0c41\u0c30\u0c4d\u0c24\u0c3f\u0c02\u0c2a\u0c41",
+                "Smart Irrigation": "\u0c38\u0c4d\u0c2e\u0c3e\u0c30\u0c4d\u0c1f\u0c4d \u0c28\u0c40\u0c1f\u0c3f\u0c2a\u0c3e\u0c30\u0c41\u0c26\u0c32",
+                "Yield Analytics": "\u0c26\u0c3f\u0c17\u0c41\u0c2c\u0c21\u0c3f \u0c35\u0c3f\u0c36\u0c4d\u0c32\u0c47\u0c37\u0c23",
+                "Welcome back, Farmer! &#x1F44B;": "\u0c24\u0c3f\u0c30\u0c3f\u0c17\u0c3f \u0c38\u0c4d\u0c35\u0c3e\u0c17\u0c24\u0c02, \u0c30\u0c48\u0c24\u0c41! \ud83d\udc4b",
+                "Scan Crop": "\u0c2a\u0c02\u0c1f\u0c28\u0c41 \u0c38\u0c4d\u0c15\u0c3e\u0c28\u0c4d \u0c1a\u0c47\u0c2f\u0c02\u0c21\u0c3f",
+                "Weather Status": "\u0c35\u0c3e\u0c24\u0c3e\u0c35\u0c30\u0c23 \u0c38\u0c4d\u0c25\u0c3f\u0c24\u0c3f",
+                "Soil Moisture": "\u0c28\u0c47\u0c32 \u0c24\u0c47\u0c2e",
+                "Crop Health Index": "\u0c2a\u0c02\u0c1f \u0c06\u0c30\u0c4b\u0c17\u0c4d\u0c2f \u0c38\u0c42\u0c1a\u0c3f\u0c15",
+                "Active Alerts": "\u0c15\u0c4d\u0c30\u0c3f\u0c2f\u0c3e\u0c36\u0c40\u0c32 \u0c39\u0c46\u0c1a\u0c4d\u0c1a\u0c30\u0c3f\u0c15\u0c32\u0c41",
+                "Intelligence Core:": "\u0c07\u0c02\u0c1f\u0c46\u0c32\u0c3f\u0c1c\u0c46\u0c28\u0c4d\u0c38\u0c4d \u0c15\u0c4b\u0c30\u0c4d:",
+                "Recent AI Scans": "\u0c07\u0c1f\u0c40\u0c35\u0c32\u0c3f AI \u0c38\u0c4d\u0c15\u0c3e\u0c28\u0c4d\u200c\u0c32\u0c41",
+                "Smart Irrigation Control": "\u0c38\u0c4d\u0c2e\u0c3e\u0c30\u0c4d\u0c1f\u0c4d \u0c28\u0c40\u0c1f\u0c3f\u0c2a\u0c3e\u0c30\u0c41\u0c26\u0c32 \u0c28\u0c3f\u0c2f\u0c02\u0c24\u0c4d\u0c30\u0c23",
+                "Yield & Market Analytics": "\u0c26\u0c3f\u0c17\u0c41\u0c2c\u0c21\u0c3f & \u0c2e\u0c3e\u0c30\u0c4d\u0c15\u0c46\u0c1f\u0c4d \u0c35\u0c3f\u0c36\u0c4d\u0c32\u0c47\u0c37\u0c23",
+                "Perfect for spraying": "\u0c38\u0c4d\u0c2a\u0c4d\u0c30\u0c47 \u0c1a\u0c47\u0c2f\u0c21\u0c3e\u0c28\u0c3f\u0c15\u0c3f \u0c05\u0c28\u0c41\u0c15\u0c42\u0c32\u0c02",
+                "Irrigation needed soon": "\u0c24\u0c4d\u0c35\u0c30\u0c32\u0c4b \u0c28\u0c40\u0c1f\u0c3f\u0c2a\u0c3e\u0c30\u0c41\u0c26\u0c32 \u0c05\u0c35\u0c38\u0c30\u0c02",
+                "Potential aphid risk": "\u0c2a\u0c47\u0c28\u0c41\u0c2c\u0c02\u0c15 \u0c2a\u0c4d\u0c30\u0c2e\u0c3e\u0c26\u0c02",
+                "Manual Override": "\u0c2e\u0c3e\u0c28\u0c4d\u0c2f\u0c41\u0c35\u0c32\u0c4d \u0c13\u0c35\u0c30\u0c4d\u200c\u0c30\u0c48\u0c21\u0c4d",
+                "Detailed Scan Logs": "\u0c35\u0c3f\u0c35\u0c30\u0c23\u0c3e\u0c24\u0c4d\u0c2e\u0c15 \u0c38\u0c4d\u0c15\u0c3e\u0c28\u0c4d \u0c32\u0c3e\u0c17\u0c4d\u200c\u0c32\u0c41"
+            }
+        };
+
+        function translatePage(lang) {
+            const dict = translations[lang] || translations['en'];
+            const elements = document.querySelectorAll('h1, h2, h3, h4, p, li, button, span, strong, td');
+            
+            elements.forEach(el => {
+                if (el.children.length > 0) {
+                    Array.from(el.childNodes).forEach(node => {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            let text = node.textContent.trim();
+                            if (text && translations.en[text] && dict[text]) {
+                                node.textContent = node.textContent.replace(text, dict[text]);
+                            } else {
+                                Object.keys(translations.te).forEach(key => {
+                                    if (text === translations.te[key] && dict[key]) {
+                                        node.textContent = node.textContent.replace(text, dict[key]);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    let text = el.textContent.trim();
+                    if (text && translations.en[text] && dict[text]) {
+                        el.textContent = dict[text];
+                    } else {
+                        Object.keys(translations.te).forEach(key => {
+                            if (text === translations.te[key] && dict[key]) {
+                                el.textContent = dict[key];
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        const selectEl = document.getElementById('headerLangSelect');
+        if (selectEl) {
+            selectEl.addEventListener('change', (e) => {
+                translatePage(e.target.value);
+            });
+        }
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
